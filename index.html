@@ -1,1 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
 
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esha Shahid — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: oklch(72% 0.16 165);
+            --primary-dim: oklch(55% 0.12 165);
+            --primary-glow: oklch(72% 0.16 165 / 0.15);
+
+            --surface-0: oklch(13% 0.01 165);
+            --surface-1: oklch(17% 0.008 165);
+            --surface-2: oklch(21% 0.008 165);
+            --surface-3: oklch(26% 0.006 165);
+
+            --text-primary: oklch(92% 0.005 165);
+            --text-secondary: oklch(70% 0.005 165);
+            --text-muted: oklch(52% 0.005 165);
+
+            --border: oklch(25% 0.006 165);
+            --border-hover: oklch(35% 0.008 165);
+
+            --accent-warm: oklch(72% 0.14 45);
+            --accent-purple: oklch(68% 0.14 300);
+
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            font-optical-sizing: auto;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 350;
+            color: var(--text-secondary);
+            background: var(--surface-0);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(16px);
+            background: oklch(13% 0.01 165 / 0.8);
+            transition: box-shadow 0.3s var(--ease-out-expo);
+        }
+
+        nav.scrolled {
+            box-shadow: 0 1px 0 var(--border);
+        }
+
+        nav .logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: color 0.15s;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            gap: 4rem;
+        }
+
+        .hero-text {
+            max-width: 560px;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 0.6s var(--ease-out-expo) 0.2s forwards;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.7s var(--ease-out-expo) 0.35s forwards;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            max-width: 45ch;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 0.6s var(--ease-out-expo) 0.5s forwards;
+        }
+
+        .hero-cta {
+            margin-top: 2.5rem;
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 0.6s var(--ease-out-expo) 0.65s forwards;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.75rem;
+            background: var(--primary);
+            color: var(--surface-0);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: transform 0.2s var(--ease-out-expo), opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.75rem;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1.5px solid var(--border);
+            transition: transform 0.2s var(--ease-out-expo), border-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            border-color: var(--border-hover);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1s var(--ease-out-expo) 0.5s forwards;
+        }
+
+        .hero-shape {
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, var(--surface-2), var(--surface-0));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+
+        .hero-shape::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: conic-gradient(from 180deg, var(--primary-glow), transparent 40%, var(--primary-glow) 60%, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            animation: slowRotate 20s linear infinite;
+        }
+
+        .hero-shape .initials {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.04em;
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 4rem;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+        }
+
+        /* Skills */
+        .skills-section {
+            background: var(--surface-1);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            max-width: 900px;
+        }
+
+        .skill-item {
+            padding: 1.5rem 1.75rem;
+            background: var(--surface-0);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: transform 0.25s var(--ease-out-expo), border-color 0.25s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-dim);
+        }
+
+        .skill-item .skill-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-item:nth-child(1) .skill-icon { background: oklch(20% 0.03 165); }
+        .skill-item:nth-child(2) .skill-icon { background: oklch(20% 0.03 300); }
+        .skill-item:nth-child(3) .skill-icon { background: oklch(20% 0.03 45); }
+        .skill-item:nth-child(4) .skill-icon { background: oklch(20% 0.02 200); }
+        .skill-item:nth-child(5) .skill-icon { background: oklch(20% 0.03 80); }
+        .skill-item:nth-child(6) .skill-icon { background: oklch(20% 0.03 130); }
+        .skill-item:nth-child(7) .skill-icon { background: oklch(20% 0.03 250); }
+
+        .skill-item h3 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Education */
+        .education-timeline {
+            max-width: 700px;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .education-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--border);
+            border-radius: 1px;
+        }
+
+        .edu-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .edu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .edu-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            transform: translateX(-4px);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .edu-item .edu-date {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .edu-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .edu-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Interests */
+        .interests-section {
+            background: var(--surface-1);
+        }
+
+        .interests-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            max-width: 700px;
+        }
+
+        .interest-tag {
+            padding: 0.6rem 1.25rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .interest-tag:hover {
+            border-color: var(--primary-dim);
+            color: var(--primary);
+        }
+
+        /* Contact */
+        .contact-section {
+            text-align: center;
+            padding: 8rem 4rem;
+        }
+
+        .contact-section .section-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: color 0.15s;
+        }
+
+        .contact-link:hover {
+            color: var(--primary);
+        }
+
+        .contact-link i {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 4rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slowRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 7rem 1.5rem 3rem;
+                min-height: auto;
+                gap: 3rem;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .hero-shape {
+                width: 220px;
+                height: 220px;
+            }
+
+            .hero-shape .initials {
+                font-size: 3.5rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            nav .nav-links {
+                gap: 1.25rem;
+            }
+
+            nav .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-section {
+                padding: 5rem 1.5rem;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">ES.</div>
+        <ul class="nav-links">
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#interests">Interests</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <p class="hero-eyebrow">Computer Science Student</p>
+            <h1>Hi, I'm Esha Shahid</h1>
+            <p>An enthusiastic developer and designer with a passion for building thoughtful digital experiences. Currently pursuing BS Computer Science at GC Women University, Faisalabad.</p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn-primary">
+                    Get in Touch
+                    <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                </a>
+                <a href="#skills" class="btn-secondary">
+                    View Skills
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-shape">
+                <span class="initials">ES</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills-section" id="skills">
+        <div class="reveal">
+            <p class="section-label">What I do</p>
+            <h2 class="section-title">Skills & Expertise</h2>
+        </div>
+        <div class="skills-grid reveal">
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="monitor" style="width:20px;height:20px;color:oklch(72% 0.16 165)"></i>
+                </div>
+                <h3>Web Design (Frontend)</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="palette" style="width:20px;height:20px;color:oklch(68% 0.14 300)"></i>
+                </div>
+                <h3>Graphic Designing</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="file-text" style="width:20px;height:20px;color:oklch(72% 0.14 45)"></i>
+                </div>
+                <h3>Microsoft Office (Certified)</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="cloud" style="width:20px;height:20px;color:oklch(70% 0.12 200)"></i>
+                </div>
+                <h3>Office 365</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="message-circle" style="width:20px;height:20px;color:oklch(72% 0.12 80)"></i>
+                </div>
+                <h3>Negotiation</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="presentation" style="width:20px;height:20px;color:oklch(70% 0.14 130)"></i>
+                </div>
+                <h3>Presentation</h3>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i data-lucide="lightbulb" style="width:20px;height:20px;color:oklch(70% 0.12 250)"></i>
+                </div>
+                <h3>Decision-Making</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="reveal">
+            <p class="section-label">Background</p>
+            <h2 class="section-title">Education</h2>
+        </div>
+        <div class="education-timeline reveal">
+            <div class="edu-item">
+                <span class="edu-date">Sep 2023 — Present</span>
+                <h3>BS Computer Science</h3>
+                <p>GC Women University, Faisalabad</p>
+            </div>
+            <div class="edu-item">
+                <span class="edu-date">Completed</span>
+                <h3>Intermediate (Physics, Mathematics, Computer Science)</h3>
+                <p>Board of Intermediate Education Faisalabad</p>
+            </div>
+            <div class="edu-item">
+                <span class="edu-date">Completed</span>
+                <h3>Matriculation (Physics, Chemistry, Computer Science)</h3>
+                <p>Board of Secondary Education Faisalabad</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="interests-section" id="interests">
+        <div class="reveal">
+            <p class="section-label">Beyond the code</p>
+            <h2 class="section-title">Interests</h2>
+        </div>
+        <div class="interests-wrap reveal">
+            <span class="interest-tag">Learning new technologies</span>
+            <span class="interest-tag">Programming & coding</span>
+            <span class="interest-tag">Research & problem-solving</span>
+            <span class="interest-tag">Drawing & sketching</span>
+            <span class="interest-tag">Graphic designing</span>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="reveal">
+            <p class="section-label">Say hello</p>
+            <h2 class="section-title">Let's Connect</h2>
+            <p>Open to opportunities, collaborations, and conversations about tech and design.</p>
+            <div class="contact-links">
+                <a href="mailto:eshashahid736@gmail.com" class="contact-link">
+                    <i data-lucide="mail" style="width:18px;height:18px;"></i>
+                    eshashahid736@gmail.com
+                </a>
+                <a href="tel:+03027833367" class="contact-link">
+                    <i data-lucide="phone" style="width:18px;height:18px;"></i>
+                    +92 302 7833367
+                </a>
+                <span class="contact-link">
+                    <i data-lucide="map-pin" style="width:18px;height:18px;"></i>
+                    Faisalabad, Pakistan
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Esha Shahid. Crafted with care.</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Nav scroll effect
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Initialize Lucide icons
+        try { lucide.createIcons(); } catch(e) {}
+    </script>
+</body>
+</html>
